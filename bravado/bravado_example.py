@@ -1,3 +1,7 @@
+"""
+A tiny demo of bravado client and why it's cool
+"""
+
 from __future__ import print_function
 
 from bravado.client import SwaggerClient
