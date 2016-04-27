@@ -12,6 +12,7 @@ from bravado_core.param import get_param_type_spec
 with open('swagger.json', 'r') as f:
     spec = Spec.from_dict(json.loads(f.read()))
 
+
 def swagger_validate(f):
     """
     Decorator that validates incoming requests using the provided swagger spec
@@ -25,7 +26,7 @@ def swagger_validate(f):
             converted_uri = converted_uri.replace(str(value), target)
         # Grab the swagger spec for this specific uri and request type
         request_spec = spec.get_op_for_request(
-                request.method.lower(), converted_uri)
+            request.method.lower(), converted_uri)
         # cycle through the params and check any params that are set or required
         # by the schema
         for param in request_spec.params.values():
@@ -40,10 +41,10 @@ def swagger_validate(f):
                 try:
                     validate_schema_object(spec, param_spec, param_value)
                 except Exception as e:
-                    #print 'bad stuff happened {0}'.format(str(e))
                     abort(400, str(e))
         return f(*args, **kwargs)
     return swagger_validated_function
+
 
 @app.route('/v2/pet/<int:petId>', methods=['GET', 'POST'])
 @swagger_validate
